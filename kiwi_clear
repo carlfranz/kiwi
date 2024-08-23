@@ -1,0 +1,22 @@
+#!/bin/bash
+
+set -o errexit
+set -o nounset
+set -o pipefail
+
+show_usage() {
+    echo "Usage: kiwi_clear [key]"
+    exit 1
+}
+
+# Check argument count
+if [ "$#" -ne 1 ]; then
+    show_usage
+fi
+
+
+# Initalize database file is not already
+sqlite3 "$SQLITE3KVDB" "CREATE TABLE IF NOT EXISTS config(name TEXT NOT NULL UNIQUE, value BLOB);"
+
+# clear key-value pair
+sqlite3 "$SQLITE3KVDB" "DELETE FROM CONFIG where name='$1';"

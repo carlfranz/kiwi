@@ -1,0 +1,17 @@
+#!/bin/bash
+
+set -o errexit
+set -o nounset
+set -o pipefail
+
+show_usage() {
+    echo "Usage: kiwi_list"
+    exit 1
+}
+
+
+# Initalize database file is not already
+sqlite3 "$SQLITE3KVDB" "CREATE TABLE IF NOT EXISTS config(name TEXT NOT NULL UNIQUE, value BLOB);"
+
+# Set key-value pair
+sqlite3 "$SQLITE3KVDB" "SELECT name FROM CONFIG"
